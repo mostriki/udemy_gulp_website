@@ -1,12 +1,12 @@
-var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var livereload = require('gulp-livereload');
-var concat = require('gulp-concat');
-var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
+var cleanCSS = require('gulp-clean-css');
+var concat = require('gulp-concat');
+var gulp = require('gulp');
+var livereload = require('gulp-livereload');
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
 
 // LESS Plugins
 var less = require('gulp-less');
@@ -81,7 +81,15 @@ gulp.task('scripts', function () {
 	console.log('starting scripts task');
 
 	return gulp.src('public/scripts/*.js')
+		.pipe(plumber(function (err) {
+			console.log('Scripts task error!');
+			console.log(err);
+			this.emit('end');
+		}))
+		.pipe(sourcemaps.init())
 		.pipe(uglify())
+		.pipe(concat('scripts.js'))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(DIST_PATH))
 		.pipe(livereload());
 });
