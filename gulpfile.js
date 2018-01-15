@@ -1,4 +1,5 @@
 var autoprefixer = require('gulp-autoprefixer');
+var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
 var gulp = require('gulp');
@@ -87,6 +88,9 @@ gulp.task('scripts', function () {
 			this.emit('end');
 		}))
 		.pipe(sourcemaps.init())
+		.pipe(babel({
+			presets: ['env']
+		}))
 		.pipe(uglify())
 		.pipe(concat('scripts.js'))
 		.pipe(sourcemaps.write())
