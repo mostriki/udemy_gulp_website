@@ -8,6 +8,7 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
+var del = require('del');
 
 // LESS Plugins
 var less = require('gulp-less');
@@ -124,7 +125,7 @@ gulp.task('images', function () {
 				imageminJPEGRecompress()
 			]
 		))
-		.pipe(gulp.dest('DIST_PATH' + '/images'));
+		.pipe(gulp.dest(DIST_PATH + '/images'));
 });
 
 gulp.task('templates', function () {
@@ -142,7 +143,13 @@ gulp.task('templates', function () {
 		.pipe(livereload());
 });
 
-gulp.task('default', ['images', 'templates', 'styles', 'scripts'], function () {
+gulp.task('clean', function() {
+	return del.sync([
+		DIST_PATH
+	]);
+});
+
+gulp.task('default', ['clean', 'images', 'templates', 'styles', 'scripts'], function () {
 	console.log('Starting default task');
 });
 
